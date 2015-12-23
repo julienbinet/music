@@ -7,14 +7,18 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
+
 class ArtisteAdmin extends Admin {
 
     protected function configureFormFields(FormMapper $formMapper) {
+
         $formMapper->with('Contenu')
                 ->add('nom', 'text')
                 ->add('bio', 'textarea')
                 ->add('pays', 'country')
-                ->add('file', 'file')
+                ->add('file', 'file', array(
+                    'required' => false
+                ))
                 ->end();
         $formMapper->with('Autre')
                 ->add('tags', 'entity', array(
@@ -27,16 +31,34 @@ class ArtisteAdmin extends Admin {
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper->add('nom')
-                    ->add('tags', null, array(), 'entity', array(
-                'class'    => 'PublicBundle\Entity\Tag',
-                'property' => 'nom',
-            ));
+                ->add('tags', null, array(), 'entity', array(
+                    'class' => 'PublicBundle\Entity\Tag',
+                    'property' => 'nom',
+        ));
     }
 
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper->addIdentifier('nom');
         $listMapper->add('pays');
         $listMapper->add('tags');
+        $listMapper->add('image');
+    }
+
+    public function prePersist($image) {
+        $this->manageFileUpload($image);
+    }
+
+    public function preUpdate($image) {
+        $this->manageFileUpload($image);
+    }
+
+    private function manageFileUpload($image) {
+//        if ($image->getImage()) {
+        $image->refreshUpdated();
+
+ 
+
+//        }
     }
 
 }
