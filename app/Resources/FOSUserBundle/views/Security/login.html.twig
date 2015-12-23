@@ -1,0 +1,50 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+
+<header>
+	<h1 class="blog-title text-center">Administration site Music</h1>
+</header>
+
+<div class="row">
+
+	<div class="col-sm-4 col-sm-offset-2">
+
+		<h3>Connexion</h3>
+
+		{% if error %}
+		<div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+
+		<form action="{{ path("fos_user_security_check") }}" method="post">
+
+			<input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+			<div class="form-group">
+				<label for="username">Login :</label>
+				<input type="text" id="username" name="_username" value="" required="required" />
+			</div>
+			<div class="form-group">
+				<label for="password">Mot de passe :</label>
+				<input type="password" id="password" name="_password" required="required" />
+			</div>
+
+			<input class="btn btn-primary text-center" type="submit" id="_submit" name="_submit" value="Connexion" />
+		</form>
+
+
+	</div>
+
+	<div class="col-sm-6">
+
+		<h3>
+			Pas encore inscrit ?
+		</h3>
+
+		<a href="{{path("fos_user_registration_register")}}" class="btn btn-primary">Inscription</a>
+
+
+	</div>
+
+</div>
+
+{% endblock fos_user_content %}

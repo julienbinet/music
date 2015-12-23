@@ -1,0 +1,8 @@
+dans table artiste et genre ajouter slug pour les url
+
+ne pas oublier inclusions des routes
+
+
+faire une side bar dynamique avec liste destags
+dernieres artistes
+derniers albums

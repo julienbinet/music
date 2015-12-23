@@ -1,0 +1,39 @@
+{% extends "AdminBundle:Admin:base.html.twig" %}
+{% block title %}{{ parent() }} > Album > {{ album.nom }}{% endblock %}
+{% block body %}
+
+
+<div class="col-sm-9 col-md-10 main">
+ <a href="{{ path("admin.artiste.index") }}" class="btn btn-primary btn-xs">Retour</a> 
+
+<div class="row">
+	<div class="col-md-12">
+		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+		<div>
+			<a href="{{ path("admin_album_editer",  {id : album.id}) }}" title="Editer l'album">Editer</a><br>
+			<a href="{{ path("admin_album_supprimer",  {id : album.id}) }}" title="Supprimer l'album" onclick="return confirm('Etes vous sur de vouloir supprimer ceta album ?'+{{ album.titre }});" >Supprimer</a>
+		</div>
+		{% endif %}
+
+		<div class="col-md-12 text-center">
+			<h3><a href="{{ path("public.artiste", {id_artiste : album.idArtiste}) }}">{{ album.nom }}</a> <span class="date">({{ album.dateSortie |date("Y") }})</span></h3>
+		</div>
+		<div class="col-sm-12 col-md-4">
+
+			<img class="img-thumbnail" src="{{ asset('uploads/photo_album/' ) }}{{album.pochette}}" alt="Symfony!" />
+		</div>
+
+		<div class="col-sm-12 col-md-8">
+			
+			<p>{{ album.infos | truncate(320, true, '...') | nl2br  }}</p>
+			<h3>Liste des titres : </h3>
+			<p>{{ album.chansons | nl2br }}</p>
+
+		</div>
+	</div>
+	</div>
+
+</div> <!-- row -->
+
+
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Musique - Administration{% endblock %}</title>
+        {% stylesheets 
+    '@PublicBundle/Resources/public/css/bootstrap.min.css'
+    '@AdminBundle/Resources/public/css/main.css'%}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <div id="header">
+            <a href="{{ path("admin.home") }}" title="Accueil">Musique / Administration</a>
+
+
+
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                <span class="admin-lien">
+                    
+                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                <a href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+                </span>
+
+            {% endif %}
+
+{#
+            {% include "AdminBundle:Admin:menu.html.twig" with {link : false} %}#}
+
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                {% include 'AdminBundle:Admin:sidebar.html.twig' %}
+            {% block body %}{% endblock %}
+            {% javascripts    
+            '@AdminBundle/Resources/public/js/script.js'
+            '@AdminBundle/Resources/public/js/jquery.js'%}
+            <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        </div>
+    </div>
+</body>
+</html>

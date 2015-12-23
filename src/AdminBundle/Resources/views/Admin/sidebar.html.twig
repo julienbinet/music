@@ -1,0 +1,9 @@
+<div class="col-sm-3 col-md-2 sidebar">
+	<ul class="nav nav-sidebar">
+		<li{% if app.request.get('_route') == 'admin.home' %} class="active"{% endif %} ><a href="{{ path("admin.home") }}">Accueil</a></li>
+		<li{% if app.request.get('_route') == 'admin.artiste.index' %} class="active"{% endif %} ><a href="{{ path("admin.artiste.index") }}">Artistes</a></li>
+		<li{% if app.request.get('_route') == 'admin.album.index' %} class="active"{% endif %} ><a href="{{ path("admin.album.index") }}">Albums</a></li>
+		<!-- <li><a href="#">Tags</a></li> -->
+	</ul>
+
+</div>

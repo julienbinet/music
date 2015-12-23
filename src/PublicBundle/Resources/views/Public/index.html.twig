@@ -1,0 +1,61 @@
+{% extends "PublicBundle:Public:base.html.twig" %}
+
+{% block body %}
+
+<div class="blog-header">
+	<h1 class="blog-title">My Musique</h1>
+	<p class="lead blog-description">Site de découverte musicale.</p>
+</div>
+
+<div class="row">
+
+	<div class="col-sm-8 blog-main">
+
+		{% for artiste in  artistes %}
+
+		{% include "PublicBundle:Public:extrait_fiche.html.twig" with{'lien' : false} %}
+
+		{% endfor %}
+
+	</div><!-- /.blog-main -->
+
+	<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+		<!-- <div class="sidebar-module">
+			<h4>Derniers ajouts</h4>
+			<ol class="list-unstyled">
+				<li><a href="#">March 2014</a></li>
+				<li><a href="#">February 2014</a></li>
+				<li><a href="#">January 2014</a></li>
+				<li><a href="#">December 2013</a></li>
+				<li><a href="#">November 2013</a></li>
+				<li><a href="#">October 2013</a></li>
+				<li><a href="#">September 2013</a></li>
+				<li><a href="#">August 2013</a></li>
+				<li><a href="#">July 2013</a></li>
+				<li><a href="#">June 2013</a></li>
+				<li><a href="#">May 2013</a></li>
+				<li><a href="#">April 2013</a></li>
+			</ol>
+		</div> -->
+		<div class="sidebar-module">
+			<h4>Genres</h4>
+			<ol class="list-unstyled">
+				{% for tag in tags %}
+				<li><a href="{{ path("public.genre", {id_tag : tag.id}) }}">{{tag.nom}}</a></li>
+				{% endfor %}
+			</ol>
+		</div>
+		<div class="sidebar-module sidebar-module-inset">
+			<h4>A Propos</h4>
+			<p>
+Ce site a été créé sous Symfony 2.
+Une seconde vesion est en cours de développement.
+
+Accéder à la <a href="{{path('admin.home')}}">partie administration</a>
+			</p>
+			</div>
+		</div><!-- /.blog-sidebar -->
+
+	</div>
+
+	{% endblock %}

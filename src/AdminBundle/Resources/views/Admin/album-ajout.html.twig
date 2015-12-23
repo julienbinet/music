@@ -1,0 +1,67 @@
+{% extends "AdminBundle:Admin:base.html.twig" %}
+{% block title %}{{ parent() }} > Album{% endblock %}
+{% block body %}
+
+<div class="col-sm-9 col-md-10 main">
+
+<h1>Nouvel album</h1>
+
+
+
+<form method='POST' novalidate enctype="multipart/form-data" >
+
+	<p>
+		{{form_label(form.idArtiste, "Artiste : ")}}
+		{{form_widget(form.idArtiste)}}
+	</p>            
+	{{form_errors(form.idArtiste)}}
+
+	<p>
+		{{form_label(form.nom, "Nom de l'album : ")}}
+		{{form_widget(form.nom)}}
+	</p>
+	{{form_errors(form.nom)}}
+
+	<br>
+	<p>
+		{{form_label(form.file, "Pochette : ")}}
+		{{form_widget(form.file)}}
+	</p>
+	{{form_errors(form.file)}}
+
+	<br>
+
+	<p>
+		{{form_label(form.dateSortie, "Date de sortie : ")}}
+		{{form_widget(form.dateSortie)}}
+	</p>
+	{{form_errors(form.dateSortie)}}
+
+	<br>
+
+	<p>
+		{{form_label(form.chansons, "Liste des titres : ")}}
+		{{form_widget(form.chansons)}}
+	</p>
+	{{form_errors(form.chansons)}}
+
+	<p>
+		{{form_label(form.infos, "Informations : ")}}
+		{{form_widget(form.infos)}}
+	</p>
+	{{form_errors(form.infos)}}
+
+
+
+
+
+	<p>
+		{{form_widget(form._token)}}
+		<input type="submit" value="Valider">
+	</p>
+
+</form>
+
+</div>
+
+{% endblock %}

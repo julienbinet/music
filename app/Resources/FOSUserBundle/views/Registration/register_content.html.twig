@@ -1,0 +1,24 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+<header>
+	<h1 class="blog-title text-center">Inscription</h1>
+</header>
+
+<div class="col-sm-12 text-center" id="inscription">
+
+	{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+	<div class="form-group">
+		
+		{{ form_widget(form) }}
+	</div>
+
+
+	<div>
+		<input type="submit" class="btn btn-primary" value="{{ 'registration.submit'|trans }}" />
+		<a class="btn btn-warning " href="{{ path('admin.home') }}">Retour</a>
+	</div>
+	{{ form_end(form) }}
+
+</div>

@@ -1,0 +1,63 @@
+{% extends "PublicBundle:Public:base.html.twig" %}
+{% block title %}{{ parent() }} > Artistes > {{ artiste.nom }}{% endblock %}
+{% block body %}
+
+<div id="fil-ariane">
+    <a href="{{ path("public.home") }}">Accueil</a> > <a href="{{ path("public.artistes") }}">Artistes</a>  >  {{ artiste.nom }}
+</div>
+
+
+
+<div class="row">
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    <div>
+        <a href="{{ path("admin_artiste_editer",  {id : artiste.id}) }}" title="Editer un artiste">Editer</a><br>
+        <a href="{{ path("admin_artiste_supprimer",  {id : artiste.id}) }}" title="Supprimer un artiste" onclick="return confirm('Etes vous sur de vouloir supprimer ceta artiste ?'+{{ artiste.nom }});" >Supprimer</a>
+    </div>
+    {% endif %}
+    <div class="col-md-12 text-center">
+        <h1>
+         {{ artiste.nom }}
+       </h1>
+   </div>
+   <div class="col-sm-12 col-md-4">
+
+    <img class="img-thumbnail" src="{{ asset('uploads/photo_artiste/' ) }}{{ artiste.image }}"/>
+
+    {% if albums %}
+    <h3>Discographie</h3>
+
+    {% for album in  albums %}
+    <div class="row">
+        <div class="col-md-offset-1 col-md-5">
+            <a href="{{ path("public.album", {id_album : album.id}) }}"><img class="img-thumbnail" src="{{ asset('uploads/photo_album/' ) }}{{ album.pochette }}" alt="album.nom"></a>
+        </div>
+        <div class="col-md-6">
+            <a href="{{ path("public.album", {id_album : album.id}) }}">{{ album.nom }}</a> <span class="date">({{ album.dateSortie |date("Y") }})</span>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% endif %}
+</div>
+<div class="col-sm-12 col-md-8">
+    <div class="bio">{{ artiste.bio | nl2br  }} </div>
+    <div class="pays">Pays : {{ artiste.pays }}</div>
+    <div class="style">
+        {% if artiste.tags.count > 0 %}
+        Genre(s) :
+        {% for tag in artiste.tags %}
+        <a href="{{ path("public.genre", {id_tag : tag.id}) }}" title="Artiste du style : {tag.nom}">{{ tag.nom }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</div>
+
+
+
+</div>
+
+
+{% endblock %}

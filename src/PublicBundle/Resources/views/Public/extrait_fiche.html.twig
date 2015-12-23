@@ -1,0 +1,41 @@
+<div class="row">
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    <div>
+        <a href="{{ path("admin_artiste_editer",  {id : artiste.id}) }}" title="Editer un artiste">Editer</a><br>
+        <a href="{{ path("admin_artiste_supprimer",  {id : artiste.id}) }}" title="Supprimer un artiste" onclick="return confirm('Etes vous sur de vouloir supprimer ceta artiste ?'+{{ artiste.nom }});" >Supprimer</a>
+    </div>
+    {% endif %}
+
+    <div class="col-md-12">
+        <h3>
+           <a href="{{ path("public.artiste", {id_artiste : artiste.id}) }}">{{ artiste.nom }}</a> 
+       </h3>
+   </div>
+
+   <div class="col-sm-12 col-md-4">
+
+      {% if lien == true %}
+      <a href="{{ path("public.artiste", {id_artiste : artiste.id}) }}"><img class="img-thumbnail" src="{{ asset('uploads/photo_artiste/' ) }}{{ artiste.image }}"/></a>
+      {% else %}
+      <a href="{{ path("public.artiste", {id_artiste : artiste.id}) }}"><img class="img-thumbnail" src="{{ asset('uploads/photo_artiste/' ) }}{{ artiste.image }}"/></a>
+      {% endif %}
+
+
+
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="bio">{{ artiste.bio | truncate(300, true, ' ... Lire la suite') }} </div>
+    <div class="pays">Pays : {{ artiste.pays }}</div>
+    <div class="style">
+        {% if artiste.tags.count > 0 %}
+        Styles :
+        {% for tag in artiste.tags %}
+        <a href="{{ path("public.genre", {id_tag : tag.id}) }}" title="Artiste du style : {tag.nom}">{{ tag.nom }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+        {% endif %}
+    </div>
+
+</div>
+</div>

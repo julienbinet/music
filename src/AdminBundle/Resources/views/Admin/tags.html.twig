@@ -1,0 +1,13 @@
+{% extends "AdminBundle:Admin:base.html.twig" %}
+{% block title %}{{ parent() }} > Tags{% endblock %}
+{% block body %}
+
+<div class="content">
+	<h1>Tags</h1>
+	{% for tag in  tags %}
+
+	<a href="{{ path("tag_voir", { id: tag.id }) }}" title="Artiste du style : {tag.nom}">{{ tag.nom }}</a>{% if not loop.last %}, {% endif %}
+
+	{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "AdminBundle:Admin:base.html.twig" %}
+{% block title %}{{ parent() }} > Artiste{% endblock %}
+{% block body %}
+
+
+<div class="col-sm-9 col-md-10 main">
+
+<h1>Nouvel artiste</h1>
+
+
+
+    <form method='POST' novalidate enctype="multipart/form-data" >
+
+        <p>
+            {{form_label(form.nom, "Nom : ")}}
+            {{form_widget(form.nom)}}
+        </p>
+        {{form_errors(form.nom)}}
+
+        <br>
+        <p>
+            {{form_label(form.file, "Image : ")}}
+            {{form_widget(form.file)}}
+        </p>
+        {{form_errors(form)}}
+
+        <br>
+
+        <p>
+            {{form_label(form.pays, "Pays : ")}}
+            {{form_widget(form.pays)}}
+        </p>
+        {{form_errors(form.pays)}}
+
+        <br>
+
+        <p>
+            {{form_label(form.bio, "Biographie : ")}}
+            {{form_widget(form.bio)}}
+        </p>
+        {{form_errors(form.bio)}}
+
+
+        <p>
+            {{form_label(form.tags, "Genre : ")}}
+            {{form_widget(form.tags)}}
+        </p>            
+        {{form_errors(form.tags)}}
+
+
+
+
+        <p>
+       {{form_widget(form._token)}}
+            <input type="submit" value="Valider">
+        </p>
+
+    </form>
+
+</div>
+
+{% endblock %}

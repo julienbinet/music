@@ -1,0 +1,58 @@
+{% extends "AdminBundle:Admin:base.html.twig" %}
+{% block title %}{{ parent() }} > Albums{% endblock %}
+{% block body %}
+
+
+<div class="col-sm-9 col-md-10 main">
+	<h1>Albums</h1>
+
+
+
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3>Albums</h3>
+			<a class="btn btn-default" href="{{ path("admin.album.ajout") }}">Ajouter</a>
+		</div>
+
+
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+
+
+					<th>Nom</th>
+					<th>Artiste</th>
+					<th>Date de Sortie</th>
+					<th>Afficher</th>
+					<th>Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for album in  albums %}
+
+				<tr>
+
+					<td><a href="{{ path("admin.album.edit", {id_album : album.id}) }}">{{ album.nom }}</a></td>
+					<td>{{ album.idArtiste }}</td>
+					<td>{{ album.dateSortie |date("d/m/Y") }}</td>
+
+
+					<td><a href="{{ path("admin.album.voir", {id_album : album.id}) }}"><i class="fa fa-eye fa-2x"></i></a></td>
+					<td><form action="{{ path("admin.album.delete", {id_album : album.id}) }}" method="POST"> <button type="submit" onclick=" ConfirmDelete()"><i class="fa fa-trash fa-2x" ></i></button></form></td>
+
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="text-center">  Pagination</div>
+
+	</div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,21 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="{{ path("public.home") }}" class="navbar-brand {% if app.request.get('_route') == 'public.home' %} active{% endif %}">My Musique</a>
+		</div>
+		<div class="navbar-collapse collapse" id="navbar" aria-expanded="false" style="">
+			<ul class="nav navbar-nav">
+				<li {% if app.request.get('_route') == 'public.artistes' %} class="active"{% endif %} ><a href="{{ path("public.artistes") }}">Artistes</a></li>
+				<li {% if app.request.get('_route') == 'public.albums' %} class="active"{% endif %}><a href="{{ path("public.albums") }}">Albums</a></li>
+				<!-- <li {% if app.request.get('_route') == 'public.tags' %} class="active"{% endif %}><a href="{{ path("public.home") }}">Tags</a></li> -->
+				<!-- <li><a href="">{{ app.request.get('_route') }} </a></li> -->
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div>
+</nav>

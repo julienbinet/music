@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Musique{% endblock %}</title>
+    {% stylesheets 
+    '@PublicBundle/Resources/public/css/main.css'
+    '@PublicBundle/Resources/public/css/bootstrap.min.css'%}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+
+    {% include "PublicBundle:Public:menu.html.twig"  %}
+    
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+    {% javascripts    
+    '@PublicBundle/Resources/public/js/jquery.js'
+    '@PublicBundle/Resources/public/js/bootstrap.min.js'%}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+</body>
+</html>

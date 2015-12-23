@@ -1,0 +1,52 @@
+{% extends "PublicBundle:Public:base.html.twig" %}
+{% block title %}{{ parent() }} > Artistes{% endblock %}
+{% block body %}
+<h1>Artistes</h1>
+
+<div class="row">
+
+{% for artiste in  artistes %}
+
+<div class="col-md-4">
+
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    <div>
+        <a href="{{ path("admin_artiste_editer",  {id : artiste.id}) }}" title="Editer un artiste">Editer</a><br>
+        <a href="{{ path("admin_artiste_supprimer",  {id : artiste.id}) }}" title="Supprimer un artiste" onclick="return confirm('Etes vous sur de vouloir supprimer ceta artiste ?'+{{ artiste.nom }});" >Supprimer</a>
+    </div>
+    {% endif %}
+
+    <div class="col-md-12">
+
+
+
+        <h3>
+         <a href="{{ path("public.artiste", {id_artiste : artiste.id}) }}">{{ artiste.nom }}</a> 
+     </h3>
+ </div>
+
+ <div class=" col-md-12">
+    <a href="{{ path("public.artiste", {id_artiste : artiste.id}) }}"><img height='220'  class="img-thumbnail" src="{{ asset('uploads/photo_artiste/' ) }}{{ artiste.image }}"/></a>
+</div>
+
+<div class="col-md-12">
+    <div class="bio">{{ artiste.bio | truncate(300, true, ' ... Lire la suite') }} </div>
+    <div class="pays">Pays : {{ artiste.pays }}</div>
+
+
+</div>
+</div>
+
+{% if loop.index % 3 == 0 and loop.length !=  loop.index %}
+
+</div>
+<div class="row">
+
+    {% endif %}
+
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

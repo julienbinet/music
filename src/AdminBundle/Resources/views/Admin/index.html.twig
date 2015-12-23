@@ -1,0 +1,28 @@
+{% extends "AdminBundle:Admin:base.html.twig" %}
+
+{% block body %}
+
+<div class="col-sm-9 col-md-10 main">
+	<h1>Accueil du site</h1>
+
+
+	{% for notice in app.session.flashBag.get('notice') %}
+	<p class="msg-flash" style="background-color: teal;border: 3px dashed white;border-radius: 10px;color: #fff;margin: 15px auto;padding: 15px;">
+		{{ notice}}
+	</p>
+
+	{% endfor %}
+
+	<h2>Artistes</h2>
+
+	<a href="{{ path("admin.artiste.ajout") }}">Ajouter</a>
+	<p>liste des Artistes</p>
+	
+	<h2>Albums</h2>
+
+	<a href="{{ path("admin.album.ajout") }}">Ajouter</a>
+	<p>liste des albums</p>
+
+</div>
+
+{% endblock %}

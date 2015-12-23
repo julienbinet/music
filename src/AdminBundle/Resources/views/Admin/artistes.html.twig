@@ -1,0 +1,62 @@
+{% extends "AdminBundle:Admin:base.html.twig" %}
+{% block title %}{{ parent() }} > Artistes{% endblock %}
+{% block body %}
+
+
+<div class="col-sm-9 col-md-10 main">
+	<h1>Artistes</h1>
+
+
+
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3>Artistes</h3>
+			<a class="btn btn-default" href="{{ path("admin.artiste.ajout") }}">Ajouter</a>
+		</div>
+
+
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+
+
+					<th>Nom</th>
+					<th>Pays</th>
+					<th>Genre</th>
+					<th>Afficher</th>
+					<th>Supprimer</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for artiste in  artistes %}
+
+				<tr>
+
+					<td><a href="{{ path("admin.artiste.edit", {id_artiste : artiste.id}) }}">{{ artiste.nom }}</a></td>
+					<td>{{ artiste.pays }}</td>
+					<td>
+						
+					{% for tag in artiste.tags %}
+					{{ tag.nom }}{% if not loop.last %}, {% endif %}
+					{% endfor %}
+					</td>
+
+					<td><a href="{{ path("admin.artiste.voir", {id_artiste : artiste.id}) }}"><i class="fa fa-eye fa-2x"></i></a></td>
+					<td><form action="{{ path("admin.artiste.delete", {id_artiste : artiste.id}) }}" method="POST"> <button type="submit" onclick=" ConfirmDelete()"><i class="fa fa-trash fa-2x" ></i></button></form></td>
+
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="text-center">  Pagination</div>
+
+	</div>
+</div>
+
+
+
+
+{% endblock %}
