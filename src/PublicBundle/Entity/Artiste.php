@@ -15,8 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table("music_artiste")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\ArtisteRepository")
  */
-class Artiste
-{
+class Artiste {
+
     /**
      * @var integer
      *
@@ -32,7 +32,6 @@ class Artiste
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
-
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -58,13 +57,11 @@ class Artiste
      */
     public $file;
 
-
     /**
-    * @ORM\ManyToMany(targetEntity="PublicBundle\Entity\Tag", inversedBy="artist")
-    * @ORM\JoinTable(name="music_artist_tags")
-    **/
+     * @ORM\ManyToMany(targetEntity="PublicBundle\Entity\Tag", inversedBy="artist")
+     * @ORM\JoinTable(name="music_artist_tags")
+     * */
     private $tags;
-
 
     public function upload() {
 
@@ -84,13 +81,12 @@ class Artiste
         //En dessous, il y a l'expression régulière qui remplace tout ce qui n'est pas une lettre non accentuées ou un chiffre
         //dans $fichier par un tiret "-" et qui place le résultat dans $fichier.
         $filename = preg_replace('/([^.a-z0-9]+)/i', '-', $filename);
-        $filename = rand(0, 1000)."_".$filename;
+        $filename = rand(0, 1000) . "_" . $filename;
 
         $this->file->move($this->getUploadRootDir(), $filename);
 
 
 // var_dump($this->getUploadRootDir());die();
-
         // définit la propriété « path » comme étant le nom de fichier où vous
         // avez stocké le fichier
         $this->image = $filename;
@@ -99,40 +95,31 @@ class Artiste
         $this->file = null;
     }
 
-
-    public function getAbsolutePath()
-    {
-        return null === $this->image ? null : $this->getUploadRootDir().'/'.$this->image;
+    public function getAbsolutePath() {
+        return null === $this->image ? null : $this->getUploadRootDir() . '/' . $this->image;
     }
 
-    public function getWebPath()
-    {
-        return null === $this->image ? null : $this->getUploadDir().'/'.$this->image;
+    public function getWebPath() {
+        return null === $this->image ? null : $this->getUploadDir() . '/' . $this->image;
     }
 
-    protected function getUploadRootDir()
-    {
+    protected function getUploadRootDir() {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__.'/../../../web/'.$this->getUploadDir();
+        return __DIR__ . '/../../../web/' . $this->getUploadDir();
     }
 
-    protected function getUploadDir()
-    {
+    protected function getUploadDir() {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
         return 'uploads/photo_artiste';
     }
-
-
-
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -142,8 +129,7 @@ class Artiste
      * @param string $nom
      * @return Artiste
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -154,8 +140,7 @@ class Artiste
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -165,8 +150,7 @@ class Artiste
      * @param string $image
      * @return Artiste
      */
-    public function setImage($image)
-    {
+    public function setImage($image) {
         $this->image = $image;
 
         return $this;
@@ -177,8 +161,7 @@ class Artiste
      *
      * @return string 
      */
-    public function getImage()
-    {
+    public function getImage() {
         return $this->image;
     }
 
@@ -188,8 +171,7 @@ class Artiste
      * @param string $pays
      * @return Artiste
      */
-    public function setPays($pays)
-    {
+    public function setPays($pays) {
         $this->pays = $pays;
 
         return $this;
@@ -200,8 +182,7 @@ class Artiste
      *
      * @return string 
      */
-    public function getPays()
-    {
+    public function getPays() {
         return $this->pays;
     }
 
@@ -211,8 +192,7 @@ class Artiste
      * @param string $bio
      * @return Artiste
      */
-    public function setBio($bio)
-    {
+    public function setBio($bio) {
         $this->bio = $bio;
 
         return $this;
@@ -223,15 +203,14 @@ class Artiste
      *
      * @return string 
      */
-    public function getBio()
-    {
+    public function getBio() {
         return $this->bio;
     }
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -241,8 +220,7 @@ class Artiste
      * @param \PublicBundle\Entity\Tag $tags
      * @return Artiste
      */
-    public function addTag(\PublicBundle\Entity\Tag $tags)
-    {
+    public function addTag(\PublicBundle\Entity\Tag $tags) {
         $this->tags[] = $tags;
 
         return $this;
@@ -253,8 +231,7 @@ class Artiste
      *
      * @param \PublicBundle\Entity\Tag $tags
      */
-    public function removeTag(\PublicBundle\Entity\Tag $tags)
-    {
+    public function removeTag(\PublicBundle\Entity\Tag $tags) {
         $this->tags->removeElement($tags);
     }
 
@@ -263,13 +240,26 @@ class Artiste
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTags()
-    {
+    public function getTags() {
         return $this->tags;
     }
 
-
     public function __toString() {
-    return (string)$this->id;
-}
+        return (string) $this->id;
+    }
+
+    public function prePersist($image) {
+        $this->manageFileUpload($image);
+    }
+
+    public function preUpdate($image) {
+        $this->manageFileUpload($image);
+    }
+
+    private function manageFileUpload($image) {
+        if ($image->getFile()) {
+            $image->refreshUpdated();
+        }
+    }
+
 }

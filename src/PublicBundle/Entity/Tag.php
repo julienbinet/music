@@ -108,4 +108,15 @@ class Tag
     {
         return $this->artist;
     }
+    
+        /**
+     * Get artist
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function __toString()
+    {
+        return $this->nom;
+    }
+    
 }

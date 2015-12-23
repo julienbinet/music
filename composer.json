@@ -20,7 +20,9 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "iphp/filestore-bundle" : "@stable",
         "twig/extensions": "^1.3",
-        "friendsofsymfony/user-bundle": "2.0.x-dev" 
+        "friendsofsymfony/user-bundle": "2.0.x-dev",
+        "sonata-project/admin-bundle": "2.3.7",
+        "sonata-project/doctrine-orm-admin-bundle": "2.3.3" 
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

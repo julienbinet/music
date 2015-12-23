@@ -10,8 +10,8 @@
 <div class="col-md-4">
 	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 	<div>
-		<a href="{{ path("admin_album_editer",  {id : album.id}) }}" title="Editer l'album">Editer</a><br>
-		<a href="{{ path("admin_album_supprimer",  {id : album.id}) }}" title="Supprimer l'album" onclick="return confirm('Etes vous sur de vouloir supprimer ceta album ?'+{{ album.titre }});" >Supprimer</a>
+		<a href="{{ path("admin_public_album_edit",  {id : album.id}) }}" title="Editer l'album">Editer</a><br>
+		<a href="{{ path("admin_public_album_delete",  {id : album.id}) }}" title="Supprimer l'album" onclick="return confirm('Etes vous sur de vouloir supprimer ceta album ?'+{{ album.nom }});" >Supprimer</a>
 	</div>
 	{% endif %}
 
