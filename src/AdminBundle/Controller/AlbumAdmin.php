@@ -16,15 +16,12 @@ class AlbumAdmin extends Admin {
 
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper->with('Contenu')
-                ->add('idArtiste', 'sonata_type_model', array(
-                    'class' => 'PublicBundle\Entity\Artiste',
-                    'property' => 'nom',
-                    'label' => 'Artiste',
-                ))
                 ->add('nom', 'text')
                 ->add('chansons', 'textarea')
                 ->add('infos', 'textarea')
-                ->add('file', 'file')
+                ->add('file', 'file',array(
+                    'required' => false
+                    ))
                 ->add('dateSortie', 'date', array(
                     'format' => "dd MM yyyy",
                     'input' => 'datetime',
@@ -32,6 +29,11 @@ class AlbumAdmin extends Admin {
                     'years' => range(date('Y'), 1950)
                     )
                 )
+                ->add('artiste', 'entity', array(
+                    'class' => 'PublicBundle\Entity\Artiste',
+                    'property' => 'nom',
+                    'multiple' => false,
+                ))
                 ->end();
     }
 
@@ -45,8 +47,15 @@ class AlbumAdmin extends Admin {
 
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper->addIdentifier('nom');
-        $listMapper->add('pays');
-//        $listMapper->add('tags');
+        $listMapper->add('dateSortie');
+        $listMapper->add('artiste.nom')
+                ->add('_action', 'actions', array(
+                    'actions' => array(
+                        'show' => array(),
+                        'edit' => array(),
+                        'delete' => array(),
+                    )
+        ));
     }
 
 }

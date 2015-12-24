@@ -4,12 +4,14 @@ namespace PublicBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Album
  *
  * @ORM\Table("music_album")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\AlbumRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Album
 {
@@ -31,14 +33,13 @@ class Album
 
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id_artiste", type="integer")
-     * @ORM\ManyToMany(targetEntity="Artiste", mappedBy="id", cascade={"persist", "merge"})
-     *
+     * @ORM\ManyToOne(targetEntity="Artiste", inversedBy="albums")
+     * @ORM\JoinColumn(name="id_artiste", referencedColumnName="id")
      */
-    private $idArtiste;
+    private $artiste;
 
+  
+    
     /**
      * @var \DateTime
      *
@@ -66,6 +67,24 @@ class Album
      */
     public $file;
 
+    
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null) {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile() {
+        return $this->file;
+    }
 
     /**
      * @var string
@@ -76,7 +95,10 @@ class Album
 
 
 
-
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
     public function upload() {
 
 
@@ -147,29 +169,7 @@ class Album
         return $this->id;
     }
 
-    /**
-     * Set idArtiste
-     *
-     * @param integer $idArtiste
-     * @return Album
-     */
-    public function setIdArtiste($idArtiste)
-    {
-        $this->idArtiste = $idArtiste;
-
-        return $this;
-    }
-
-    /**
-     * Get idArtiste
-     *
-     * @return integer 
-     */
-    public function getIdArtiste()
-    {
-        return $this->idArtiste;
-    }
-
+  
     /**
      * Set dateSortie
      *
@@ -239,6 +239,31 @@ class Album
         return $this->pochette;
     }
 
+  
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return Album
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
     /**
      * Set infos
      *
@@ -263,25 +288,31 @@ class Album
     }
 
     /**
-     * Set nom
+     * Set artiste
      *
-     * @param string $nom
+     * @param \PublicBundle\Entity\Artiste $artiste
      * @return Album
      */
-    public function setNom($nom)
+    public function setArtiste(\PublicBundle\Entity\Artiste $artiste = null)
     {
-        $this->nom = $nom;
+        $this->artiste = $artiste;
 
         return $this;
     }
 
     /**
-     * Get nom
+     * Get artiste
      *
-     * @return string 
+     * @return \PublicBundle\Entity\Artiste 
      */
-    public function getNom()
+    public function getArtiste()
     {
-        return $this->nom;
+        return $this->artiste;
     }
+    
+    
+
+    
+    
+    
 }

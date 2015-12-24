@@ -6,7 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-
+use Sonata\AdminBundle\Show\ShowMapper;
 
 class ArtisteAdmin extends Admin {
 
@@ -40,8 +40,28 @@ class ArtisteAdmin extends Admin {
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper->addIdentifier('nom');
         $listMapper->add('pays');
-        $listMapper->add('tags');
-        $listMapper->add('image');
+        $listMapper->add('tags')
+                ->add('_action', 'actions', array(
+                    'actions' => array(
+                        'show' => array(),
+                        'edit' => array(),
+                        'delete' => array(),
+                    )
+        ));
+    }
+
+    protected function configureShowFields(ShowMapper $showMapper) {
+
+        $showMapper
+                ->add('nom', 'text')
+                ->add('bio', 'textarea')
+                ->add('pays', 'country')
+                ->add('image', null,array('template' => 'AdminBundle:Admin:admin_image.html.twig'))
+                ->add('tags', 'entity', array(
+                    'class' => 'PublicBundle\Entity\Tag',
+                    'property' => 'nom',
+                ))
+        ;
     }
 
     public function prePersist($image) {
@@ -53,12 +73,7 @@ class ArtisteAdmin extends Admin {
     }
 
     private function manageFileUpload($image) {
-//        if ($image->getImage()) {
         $image->refreshUpdated();
-
- 
-
-//        }
     }
 
 }

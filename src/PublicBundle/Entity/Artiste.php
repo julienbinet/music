@@ -4,6 +4,7 @@ namespace PublicBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @FileStore\Uploadable
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table("music_artiste")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\ArtisteRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Artiste {
 
@@ -55,7 +57,25 @@ class Artiste {
     /**
      * @Assert\File(maxSize="6000000")
      */
-    public $file;
+    private $file;
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null) {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile() {
+        return $this->file;
+    }
 
     /**
      * @ORM\ManyToMany(targetEntity="PublicBundle\Entity\Tag", inversedBy="artist")
@@ -63,6 +83,25 @@ class Artiste {
      * */
     private $tags;
 
+        /**
+     * @ORM\OneToMany(targetEntity="Album", mappedBy="id")
+     */
+    private $albums;
+    
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime")
+     */
+    private $updated;
+
+    
+    
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
     public function upload() {
 
 
@@ -86,7 +125,7 @@ class Artiste {
         $this->file->move($this->getUploadRootDir(), $filename);
 
 
-// var_dump($this->getUploadRootDir());die();
+//        var_dump($this->getUploadRootDir());
         // définit la propriété « path » comme étant le nom de fichier où vous
         // avez stocké le fichier
         $this->image = $filename;
@@ -212,6 +251,7 @@ class Artiste {
      */
     public function __construct() {
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+         $this->albums = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -248,18 +288,72 @@ class Artiste {
         return (string) $this->id;
     }
 
-    public function prePersist($image) {
-        $this->manageFileUpload($image);
+    /**
+     * Lifecycle callback to upload the file to the server
+     */
+    public function lifecycleFileUpload() {
+        $this->upload();
     }
 
-    public function preUpdate($image) {
-        $this->manageFileUpload($image);
+    /**
+     * Updates the hash value to force the preUpdate and postUpdate events to fire
+     */
+    public function refreshUpdated() {
+        $this->setUpdated(new \DateTime());
     }
 
-    private function manageFileUpload($image) {
-        if ($image->getFile()) {
-            $image->refreshUpdated();
-        }
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Artiste
+     */
+    public function setUpdated($updated) {
+        $this->updated = $updated;
+
+        return $this;
     }
 
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated() {
+        return $this->updated;
+    }
+
+
+    /**
+     * Add albums
+     *
+     * @param \PublicBundle\Entity\Album $albums
+     * @return Artiste
+     */
+    public function addAlbum(\PublicBundle\Entity\Album $albums)
+    {
+        $this->albums[] = $albums;
+
+        return $this;
+    }
+
+    /**
+     * Remove albums
+     *
+     * @param \PublicBundle\Entity\Album $albums
+     */
+    public function removeAlbum(\PublicBundle\Entity\Album $albums)
+    {
+        $this->albums->removeElement($albums);
+    }
+
+    /**
+     * Get albums
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlbums()
+    {
+        return $this->albums;
+    }
 }
