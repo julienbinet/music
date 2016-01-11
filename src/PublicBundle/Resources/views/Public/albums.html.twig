@@ -16,7 +16,7 @@
 	{% endif %}
 
 	<div class="col-md-12">
-		<h3><a href="{{ path("public.artiste", {id_artiste : album.idArtiste}) }}">lien artiste</a></h3>
+		<h3><a href="{{ path("public.artiste", {id_artiste : album.artiste.id}) }}">{{album.artiste.nom}}</a></h3>
 		<h3><a href="{{ path("public.album", {id_album : album.id}) }}">{{ album.nom }}</a> <span class="date">({{ album.dateSortie |date("Y") }})</span></h3>
 	</div>
 
