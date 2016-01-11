@@ -285,7 +285,7 @@ class Artiste {
     }
 
     public function __toString() {
-        return (string) $this->id;
+        return (string) $this->nom;
     }
 
     /**

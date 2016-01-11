@@ -66,7 +66,11 @@ class Album
      * @Assert\File(maxSize="6000000")
      */
     public $file;
-
+    
+    
+    public function __toString() {
+        return (string) $this->nom;
+    }
     
     /**
      * Sets file.
