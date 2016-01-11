@@ -11,13 +11,13 @@
 	<div class="col-md-12">
 		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 		<div>
-			<a href="{{ path("admin_album_editer",  {id : album.id}) }}" title="Editer l'album">Editer</a><br>
-			<a href="{{ path("admin_album_supprimer",  {id : album.id}) }}" title="Supprimer l'album" onclick="return confirm('Etes vous sur de vouloir supprimer ceta album ?'+{{ album.titre }});" >Supprimer</a>
+			<a href="{{ path("admin_public_album_edit",  {id : album.id}) }}" title="Editer l'album">Editer</a><br>
+			<a href="{{ path("admin_public_album_delete",  {id : album.id}) }}" title="Supprimer l'album" onclick="return confirm('Etes vous sur de vouloir supprimer ceta album ?'+{{ album.nom }});" >Supprimer</a>
 		</div>
 		{% endif %}
 
 		<div class="col-md-12 text-center">
-			<h3><a href="{{ path("public.artiste", {id_artiste : album.idArtiste}) }}">{{ album.nom }}</a> <span class="date">({{ album.dateSortie |date("Y") }})</span></h3>
+			<h3><a href="{{ path("public.artiste", {id_artiste : album.artiste.id}) }}">{{ album.nom }}</a> <span class="date">({{ album.dateSortie |date("Y") }}) de <a href="{{ path("public.artiste", {id_artiste : album.artiste.id}) }}">{{album.artiste.nom}}</a></span></h3>
 		</div>
 		<div class="col-sm-12 col-md-4">
 			<img class="img-thumbnail" src="{{ asset('uploads/photo_album/' ) }}{{ album.pochette }}"/>

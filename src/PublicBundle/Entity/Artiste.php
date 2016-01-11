@@ -4,6 +4,7 @@ namespace PublicBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @FileStore\Uploadable
@@ -14,9 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table("music_artiste")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\ArtisteRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
-class Artiste
-{
+class Artiste {
+
     /**
      * @var integer
      *
@@ -32,7 +34,6 @@ class Artiste
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
-
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -56,16 +57,51 @@ class Artiste
     /**
      * @Assert\File(maxSize="6000000")
      */
-    public $file;
-
+    private $file;
 
     /**
-    * @ORM\ManyToMany(targetEntity="PublicBundle\Entity\Tag", inversedBy="artist")
-    * @ORM\JoinTable(name="music_artist_tags")
-    **/
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null) {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile() {
+        return $this->file;
+    }
+
+    /**
+     * @ORM\ManyToMany(targetEntity="PublicBundle\Entity\Tag", inversedBy="artist")
+     * @ORM\JoinTable(name="music_artist_tags")
+     * */
     private $tags;
 
+        /**
+     * @ORM\OneToMany(targetEntity="Album", mappedBy="id")
+     */
+    private $albums;
+    
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime")
+     */
+    private $updated;
 
+    
+    
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
     public function upload() {
 
 
@@ -84,13 +120,12 @@ class Artiste
         //En dessous, il y a l'expression régulière qui remplace tout ce qui n'est pas une lettre non accentuées ou un chiffre
         //dans $fichier par un tiret "-" et qui place le résultat dans $fichier.
         $filename = preg_replace('/([^.a-z0-9]+)/i', '-', $filename);
-        $filename = rand(0, 1000)."_".$filename;
+        $filename = rand(0, 1000) . "_" . $filename;
 
         $this->file->move($this->getUploadRootDir(), $filename);
 
 
-// var_dump($this->getUploadRootDir());die();
-
+//        var_dump($this->getUploadRootDir());
         // définit la propriété « path » comme étant le nom de fichier où vous
         // avez stocké le fichier
         $this->image = $filename;
@@ -99,40 +134,31 @@ class Artiste
         $this->file = null;
     }
 
-
-    public function getAbsolutePath()
-    {
-        return null === $this->image ? null : $this->getUploadRootDir().'/'.$this->image;
+    public function getAbsolutePath() {
+        return null === $this->image ? null : $this->getUploadRootDir() . '/' . $this->image;
     }
 
-    public function getWebPath()
-    {
-        return null === $this->image ? null : $this->getUploadDir().'/'.$this->image;
+    public function getWebPath() {
+        return null === $this->image ? null : $this->getUploadDir() . '/' . $this->image;
     }
 
-    protected function getUploadRootDir()
-    {
+    protected function getUploadRootDir() {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__.'/../../../web/'.$this->getUploadDir();
+        return __DIR__ . '/../../../web/' . $this->getUploadDir();
     }
 
-    protected function getUploadDir()
-    {
+    protected function getUploadDir() {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
         return 'uploads/photo_artiste';
     }
-
-
-
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -142,8 +168,7 @@ class Artiste
      * @param string $nom
      * @return Artiste
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -154,8 +179,7 @@ class Artiste
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -165,8 +189,7 @@ class Artiste
      * @param string $image
      * @return Artiste
      */
-    public function setImage($image)
-    {
+    public function setImage($image) {
         $this->image = $image;
 
         return $this;
@@ -177,8 +200,7 @@ class Artiste
      *
      * @return string 
      */
-    public function getImage()
-    {
+    public function getImage() {
         return $this->image;
     }
 
@@ -188,8 +210,7 @@ class Artiste
      * @param string $pays
      * @return Artiste
      */
-    public function setPays($pays)
-    {
+    public function setPays($pays) {
         $this->pays = $pays;
 
         return $this;
@@ -200,8 +221,7 @@ class Artiste
      *
      * @return string 
      */
-    public function getPays()
-    {
+    public function getPays() {
         return $this->pays;
     }
 
@@ -211,8 +231,7 @@ class Artiste
      * @param string $bio
      * @return Artiste
      */
-    public function setBio($bio)
-    {
+    public function setBio($bio) {
         $this->bio = $bio;
 
         return $this;
@@ -223,16 +242,16 @@ class Artiste
      *
      * @return string 
      */
-    public function getBio()
-    {
+    public function getBio() {
         return $this->bio;
     }
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+         $this->albums = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -241,8 +260,7 @@ class Artiste
      * @param \PublicBundle\Entity\Tag $tags
      * @return Artiste
      */
-    public function addTag(\PublicBundle\Entity\Tag $tags)
-    {
+    public function addTag(\PublicBundle\Entity\Tag $tags) {
         $this->tags[] = $tags;
 
         return $this;
@@ -253,8 +271,7 @@ class Artiste
      *
      * @param \PublicBundle\Entity\Tag $tags
      */
-    public function removeTag(\PublicBundle\Entity\Tag $tags)
-    {
+    public function removeTag(\PublicBundle\Entity\Tag $tags) {
         $this->tags->removeElement($tags);
     }
 
@@ -263,13 +280,80 @@ class Artiste
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTags()
-    {
+    public function getTags() {
         return $this->tags;
     }
 
-
     public function __toString() {
-    return (string)$this->id;
-}
+        return (string) $this->nom;
+    }
+
+    /**
+     * Lifecycle callback to upload the file to the server
+     */
+    public function lifecycleFileUpload() {
+        $this->upload();
+    }
+
+    /**
+     * Updates the hash value to force the preUpdate and postUpdate events to fire
+     */
+    public function refreshUpdated() {
+        $this->setUpdated(new \DateTime());
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Artiste
+     */
+    public function setUpdated($updated) {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated() {
+        return $this->updated;
+    }
+
+
+    /**
+     * Add albums
+     *
+     * @param \PublicBundle\Entity\Album $albums
+     * @return Artiste
+     */
+    public function addAlbum(\PublicBundle\Entity\Album $albums)
+    {
+        $this->albums[] = $albums;
+
+        return $this;
+    }
+
+    /**
+     * Remove albums
+     *
+     * @param \PublicBundle\Entity\Album $albums
+     */
+    public function removeAlbum(\PublicBundle\Entity\Album $albums)
+    {
+        $this->albums->removeElement($albums);
+    }
+
+    /**
+     * Get albums
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlbums()
+    {
+        return $this->albums;
+    }
 }

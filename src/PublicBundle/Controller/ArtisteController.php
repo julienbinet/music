@@ -52,7 +52,7 @@ class ArtisteController extends Controller {
       ->getRepository("PublicBundle:Album")
       ->findBy(
         array(
-          'idArtiste' => $id_artiste,
+          'artiste' => $id_artiste,
           ));
 
 

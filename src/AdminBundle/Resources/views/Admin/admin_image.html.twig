@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field%}
+    <div>
+        <img src="/web/{{ object.webPath}}" class="admin-image" />
+        {# or whatever to create src of image #}
+    </div>
+{% endblock %}
