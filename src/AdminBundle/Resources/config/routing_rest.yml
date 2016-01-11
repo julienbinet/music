@@ -1,0 +1,4 @@
+users : 
+  type: rest
+  resource:     "AdminBundle:ArtisteRest"
+  name_prefix:  api_
