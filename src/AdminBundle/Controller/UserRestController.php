@@ -6,15 +6,14 @@ use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use PublicBundle\Entity\Artiste;
-use PublicBundle\Entity\ArtisteRepository;
+
 
 /**
- * Description of ArtisteRestController
+ * Description of UserRestController
  *
  * @author julien
  */
-class ArtisteRestController extends Controller {
+class UserRestController extends Controller {
 
     /**
      * 
@@ -22,14 +21,12 @@ class ArtisteRestController extends Controller {
      * @View()
      * 
      */
-    public function getArtistesAction() {
+    public function getUsersAction() {
 
 //    $user = $this->getDoctrine()->getRepository('AdminBundle:User')->findOneByUsername($username);
         
-          $artistes = $this->getDoctrine()->getRepository('PublicBundle:Artiste')->findAll();
-          return array("artistes" => $artistes);
-
-         
+          $user = $this->getDoctrine()->getRepository('AdminBundle:User')->findAll();
+          return array("users" => $user);
 
     }
 

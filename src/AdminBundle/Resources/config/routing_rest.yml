@@ -1,4 +1,9 @@
-users : 
+artists : 
   type: rest
   resource:     "AdminBundle:ArtisteRest"
+  name_prefix:  api_
+  
+users : 
+  type: rest
+  resource:     "AdminBundle:UserRest"
   name_prefix:  api_
