@@ -24,13 +24,16 @@ class ArtisteRestController extends Controller {
      */
     public function getArtistesAction() {
 
-//    $user = $this->getDoctrine()->getRepository('AdminBundle:User')->findOneByUsername($username);
-        
-          $artistes = $this->getDoctrine()->getRepository('PublicBundle:Artiste')->findAll();
-          return array("artistes" => $artistes);
+        $artistes = $this->getDoctrine()->getRepository('PublicBundle:Artiste')->findAll();
+        return array("artistes" => $artistes);
+    }
 
-         
-
+    /**
+     * @View()
+     */
+    public function getArtisteAction($id) {
+        $artiste = $this->getDoctrine()->getRepository('PublicBundle:Artiste')->findOneBy(array('id' => $id));
+        return $artiste;
     }
 
 }
