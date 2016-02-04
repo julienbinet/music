@@ -26,7 +26,8 @@
         "sonata-project/doctrine-orm-admin-bundle": "2.3.3",
         "knplabs/knp-menu-bundle": "~1.1",
         "friendsofsymfony/rest-bundle": "dev-master",
-        "jms/serializer-bundle": "dev-master"
+        "jms/serializer-bundle": "dev-master",
+        "nelmio/cors-bundle": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

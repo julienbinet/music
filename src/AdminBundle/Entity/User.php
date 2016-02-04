@@ -5,10 +5,16 @@ namespace AdminBundle\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\VirtualProperty;
+
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="music_utilisateurs")
+ * @ExclusionPolicy("all") 
  */
 class User extends BaseUser
 {
@@ -16,6 +22,7 @@ class User extends BaseUser
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     protected $id;
 
@@ -28,7 +35,7 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=20)
-     *
+     * @Expose
      */
     protected $telephone;
 
@@ -40,6 +47,7 @@ class User extends BaseUser
     * @Assert\Url(
     *    message = "The url '{{ value }}' is not a valid url",
     * )
+     * @Expose
     */
 
       protected $site;

@@ -29,5 +29,20 @@ class UserRestController extends Controller {
           return array("users" => $user);
 
     }
+    
+    
+        /**
+     * 
+     * @View()
+     * 
+     */
+    public function getUserAction($id) {
+
+//    $user = $this->getDoctrine()->getRepository('AdminBundle:User')->findOneByUsername($username);
+        
+          $user = $this->getDoctrine()->getRepository('AdminBundle:User')->findOneBy(array('id' => $id));
+          return $user;
+
+    }
 
 }

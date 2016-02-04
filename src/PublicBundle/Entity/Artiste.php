@@ -5,6 +5,10 @@ namespace PublicBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * @FileStore\Uploadable
@@ -16,6 +20,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ORM\Table("music_artiste")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\ArtisteRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @ExclusionPolicy("all") 
  */
 class Artiste {
 
@@ -25,6 +30,7 @@ class Artiste {
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     private $id;
 
@@ -32,11 +38,13 @@ class Artiste {
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=255)
+     * @Expose
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     private $image;
 
@@ -44,6 +52,7 @@ class Artiste {
      * @var string
      *
      * @ORM\Column(name="pays", type="string", length=255)
+     * @Expose
      */
     private $pays;
 
@@ -51,6 +60,7 @@ class Artiste {
      * @var string
      *
      * @ORM\Column(name="bio", type="text")
+     * @Expose
      */
     private $bio;
 
@@ -80,15 +90,16 @@ class Artiste {
     /**
      * @ORM\ManyToMany(targetEntity="PublicBundle\Entity\Tag", inversedBy="artist")
      * @ORM\JoinTable(name="music_artist_tags")
-     * */
+     * @Expose
+     */
     private $tags;
 
-        /**
-     * @ORM\OneToMany(targetEntity="Album", mappedBy="id")
+    /**
+     * @ORM\OneToMany(targetEntity="PublicBundle\Entity\Album", mappedBy="artiste")
+     * @Expose
      */
     private $albums;
-    
-    
+
     /**
      * @var \DateTime
      *
@@ -96,8 +107,6 @@ class Artiste {
      */
     private $updated;
 
-    
-    
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
@@ -251,7 +260,7 @@ class Artiste {
      */
     public function __construct() {
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-         $this->albums = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->albums = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -323,15 +332,13 @@ class Artiste {
         return $this->updated;
     }
 
-
     /**
      * Add albums
      *
      * @param \PublicBundle\Entity\Album $albums
      * @return Artiste
      */
-    public function addAlbum(\PublicBundle\Entity\Album $albums)
-    {
+    public function addAlbum(\PublicBundle\Entity\Album $albums) {
         $this->albums[] = $albums;
 
         return $this;
@@ -342,8 +349,7 @@ class Artiste {
      *
      * @param \PublicBundle\Entity\Album $albums
      */
-    public function removeAlbum(\PublicBundle\Entity\Album $albums)
-    {
+    public function removeAlbum(\PublicBundle\Entity\Album $albums) {
         $this->albums->removeElement($albums);
     }
 
@@ -352,8 +358,8 @@ class Artiste {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getAlbums()
-    {
+    public function getAlbums() {
         return $this->albums;
     }
+
 }

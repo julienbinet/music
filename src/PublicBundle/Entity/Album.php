@@ -33,7 +33,7 @@ class Album
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Artiste", inversedBy="albums")
+     * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\Artiste", inversedBy="albums")
      * @ORM\JoinColumn(name="id_artiste", referencedColumnName="id")
      */
     private $artiste;
