@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\MaxDepth;
 use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
@@ -90,6 +91,7 @@ class Artiste {
     /**
      * @ORM\ManyToMany(targetEntity="PublicBundle\Entity\Tag", inversedBy="artist")
      * @ORM\JoinTable(name="music_artist_tags")
+     * @MaxDepth(2)
      * @Expose
      */
     private $tags;

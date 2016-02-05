@@ -5,6 +5,11 @@ namespace PublicBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * Album
@@ -12,15 +17,17 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ORM\Table("music_album")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\AlbumRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @ExclusionPolicy("all")
  */
-class Album
-{
+class Album {
+
     /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     private $id;
 
@@ -28,22 +35,23 @@ class Album
      * @var string
      *
      * @ORM\Column(name="nom", type="text")
+     * @Expose
      */
     private $nom;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="PublicBundle\Entity\Artiste", inversedBy="albums")
      * @ORM\JoinColumn(name="id_artiste", referencedColumnName="id")
+     * @Expose
+     * @MaxDepth(2)
      */
     private $artiste;
 
-  
-    
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateSortie", type="datetime")
+     * @Expose
      */
     private $dateSortie;
 
@@ -51,6 +59,7 @@ class Album
      * @var string
      *
      * @ORM\Column(name="chansons", type="text")
+     * @Expose
      */
     private $chansons;
 
@@ -58,20 +67,30 @@ class Album
      * @var string
      *
      * @ORM\Column(name="pochette", type="string", length=255)
+     * @Expose
      */
     private $pochette;
 
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="infos", type="text")
+     * @Expose
+     */
+    private $infos;
 
-        /**
+    
+    
+    /**
      * @Assert\File(maxSize="6000000")
      */
     public $file;
-    
-    
+
     public function __toString() {
         return (string) $this->nom;
     }
-    
+
     /**
      * Sets file.
      *
@@ -89,15 +108,6 @@ class Album
     public function getFile() {
         return $this->file;
     }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="infos", type="text")
-     */
-    private $infos;
-
-
 
     /**
      * @ORM\PrePersist()
@@ -121,13 +131,12 @@ class Album
         //En dessous, il y a l'expression régulière qui remplace tout ce qui n'est pas une lettre non accentuées ou un chiffre
         //dans $fichier par un tiret "-" et qui place le résultat dans $fichier.
         $filename = preg_replace('/([^.a-z0-9]+)/i', '-', $filename);
-        $filename = rand(0, 1000)."_".$filename;
+        $filename = rand(0, 1000) . "_" . $filename;
 
         $this->file->move($this->getUploadRootDir(), $filename);
 
 
 // var_dump($this->getUploadRootDir());die();
-
         // définit la propriété « path » comme étant le nom de fichier où vous
         // avez stocké le fichier
         $this->pochette = $filename;
@@ -136,52 +145,41 @@ class Album
         $this->file = null;
     }
 
-
-    public function getAbsolutePath()
-    {
-        return null === $this->pochette ? null : $this->getUploadRootDir().'/'.$this->pochette;
+    public function getAbsolutePath() {
+        return null === $this->pochette ? null : $this->getUploadRootDir() . '/' . $this->pochette;
     }
 
-    public function getWebPath()
-    {
-        return null === $this->pochette ? null : $this->getUploadDir().'/'.$this->pochette;
+    public function getWebPath() {
+        return null === $this->pochette ? null : $this->getUploadDir() . '/' . $this->pochette;
     }
 
-    protected function getUploadRootDir()
-    {
+    protected function getUploadRootDir() {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__.'/../../../web/'.$this->getUploadDir();
+        return __DIR__ . '/../../../web/' . $this->getUploadDir();
     }
 
-    protected function getUploadDir()
-    {
+    protected function getUploadDir() {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/pochette dans la vue.
         return 'uploads/photo_album';
     }
-
-
-
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-  
     /**
      * Set dateSortie
      *
      * @param \DateTime $dateSortie
      * @return Album
      */
-    public function setDateSortie($dateSortie)
-    {
+    public function setDateSortie($dateSortie) {
         $this->dateSortie = $dateSortie;
 
         return $this;
@@ -192,8 +190,7 @@ class Album
      *
      * @return \DateTime 
      */
-    public function getDateSortie()
-    {
+    public function getDateSortie() {
         return $this->dateSortie;
     }
 
@@ -203,8 +200,7 @@ class Album
      * @param string $chansons
      * @return Album
      */
-    public function setChansons($chansons)
-    {
+    public function setChansons($chansons) {
         $this->chansons = $chansons;
 
         return $this;
@@ -215,8 +211,7 @@ class Album
      *
      * @return string 
      */
-    public function getChansons()
-    {
+    public function getChansons() {
         return $this->chansons;
     }
 
@@ -226,8 +221,7 @@ class Album
      * @param string $pochette
      * @return Album
      */
-    public function setPochette($pochette)
-    {
+    public function setPochette($pochette) {
         $this->pochette = $pochette;
 
         return $this;
@@ -238,12 +232,9 @@ class Album
      *
      * @return string 
      */
-    public function getPochette()
-    {
+    public function getPochette() {
         return $this->pochette;
     }
-
-  
 
     /**
      * Set nom
@@ -251,8 +242,7 @@ class Album
      * @param string $nom
      * @return Album
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -263,8 +253,7 @@ class Album
      *
      * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
@@ -274,8 +263,7 @@ class Album
      * @param string $infos
      * @return Album
      */
-    public function setInfos($infos)
-    {
+    public function setInfos($infos) {
         $this->infos = $infos;
 
         return $this;
@@ -286,8 +274,7 @@ class Album
      *
      * @return string 
      */
-    public function getInfos()
-    {
+    public function getInfos() {
         return $this->infos;
     }
 
@@ -297,8 +284,7 @@ class Album
      * @param \PublicBundle\Entity\Artiste $artiste
      * @return Album
      */
-    public function setArtiste(\PublicBundle\Entity\Artiste $artiste = null)
-    {
+    public function setArtiste(\PublicBundle\Entity\Artiste $artiste = null) {
         $this->artiste = $artiste;
 
         return $this;
@@ -309,14 +295,8 @@ class Album
      *
      * @return \PublicBundle\Entity\Artiste 
      */
-    public function getArtiste()
-    {
+    public function getArtiste() {
         return $this->artiste;
     }
-    
-    
 
-    
-    
-    
 }

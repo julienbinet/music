@@ -19,7 +19,7 @@ class ArtisteRestController extends Controller {
     /**
      * 
      * @return array
-     * @View()
+     * @View(serializerEnableMaxDepthChecks=true)
      * 
      */
     public function getArtistesAction() {
@@ -29,7 +29,7 @@ class ArtisteRestController extends Controller {
     }
 
     /**
-     * @View()
+     * @View(serializerEnableMaxDepthChecks=true)
      */
     public function getArtisteAction($id) {
         $artiste = $this->getDoctrine()->getRepository('PublicBundle:Artiste')->findOneBy(array('id' => $id));
