@@ -3,12 +3,18 @@
 namespace PublicBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Annotation\VirtualProperty;
 
 /**
  * Tag
  *
  * @ORM\Table("music_tag")
  * @ORM\Entity(repositoryClass="PublicBundle\Entity\TagRepository")
+ * @ExclusionPolicy("all")
  */
 class Tag
 {
@@ -18,6 +24,7 @@ class Tag
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     private $id;
 
@@ -25,6 +32,7 @@ class Tag
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=255)
+     * @Expose
      */
     private $nom;
 
@@ -32,6 +40,7 @@ class Tag
 
     /**
      * @ORM\ManyToMany(targetEntity="PublicBundle\Entity\Artiste", mappedBy="tags")
+     * 
      **/
     private $artist;
 

@@ -12,3 +12,8 @@ albums :
   type: rest
   resource:     "AdminBundle:AlbumRest"
   name_prefix:  api_
+  
+genres : 
+  type: rest
+  resource:     "AdminBundle:TagRest"
+  name_prefix:  api_
